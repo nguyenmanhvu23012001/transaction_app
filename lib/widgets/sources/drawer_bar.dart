@@ -46,7 +46,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             leading: Icon(Icons.history),
             title: Text('History', style: TextStyle(fontSize: 16)),
             onTap: () {
-
+                      context.router.push(HistoryRoute());
             },
           ),
           ListTile(
@@ -66,8 +66,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
         ],
       ),
     );
-
-
 
   }
 }

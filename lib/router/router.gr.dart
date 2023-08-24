@@ -39,6 +39,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const TransactionPage(),
       );
     },
+    HistoryRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const HistoryPage(),
+      );
+    },
   };
 }
 
@@ -94,6 +100,20 @@ class TransactionRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'TransactionRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [HistoryPage]
+class HistoryRoute extends PageRouteInfo<void> {
+  const HistoryRoute({List<PageRouteInfo>? children})
+      : super(
+          HistoryRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'HistoryRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

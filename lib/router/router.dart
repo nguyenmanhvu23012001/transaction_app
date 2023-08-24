@@ -4,6 +4,7 @@ import 'package:zen8app/app/pages/auth/login/login_page.dart';
 import 'package:zen8app/app/pages/main/home/home_page.dart';
 
 import '../app/pages/auth/wellcome_page.dart';
+import '../app/pages/main/history/history_page.dart';
 import '../app/pages/main/transaction/transaction_page.dart';
 export 'package:auto_route/auto_route.dart';
 
@@ -28,5 +29,6 @@ class AppRouter extends _$AppRouter {
     AutoRoute(page: HomeRoute.page, path: "/", guards: [AuthGuard()]),
     AutoRoute(page: LoginRoute.page),
     AutoRoute(page: TransactionRoute.page),
+    AutoRoute(page: HistoryRoute.page),
   ];
 }
