@@ -1,43 +1,31 @@
+import 'dart:convert';
+
 import 'package:json_annotation/json_annotation.dart';
+import 'package:zen8app/core/core.dart';
 
 part 'user.g.dart';
-
 @JsonSerializable()
 class User {
-  final int id;
-
-  @JsonKey(defaultValue: "")
-  final String name;
-
-  @JsonKey(defaultValue: "")
+  @JsonKey(name :"_id")
+  final String id;
+  final String username;
+  final String password;
+  @JsonKey(defaultValue: "daoxuanloc@gmail.com" )
   final String email;
-
-  final bool? isAdmin;
+  @JsonKey(name :"number_phone")
+  final String numberPhone;
+  @JsonKey(name :"deleted_at")
+  final DateTime? deletedAt;
 
   User({
     required this.id,
-    required this.name,
+    required this.username,
+    required this.password,
     required this.email,
-    required this.isAdmin,
+    required this.numberPhone,
+    this.deletedAt,
   });
-
-  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
-
+  factory User.fromJson(Map<String, dynamic> json) =>
+      _$UserFromJson(json);
   Map<String, dynamic> toJson() => _$UserToJson(this);
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) {
-      return true;
-    }
-
-    if (other is! User) {
-      return false;
-    }
-
-    return other.id == id;
-  }
-
-  @override
-  int get hashCode => id;
 }

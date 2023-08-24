@@ -1,12 +1,15 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:form_validator/form_validator.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:zen8app/app/pages/auth/login/login_vm.dart';
 import 'package:zen8app/core/core.dart';
 import 'package:zen8app/router/router.dart';
 import 'package:zen8app/utils/utils.dart';
 import 'package:zen8app/widgets/widgets.dart';
+
+import '../../../../widgets/sources/fade_animate_widget.dart';
 
 @RoutePage()
 class LoginPage extends StatefulWidget {
@@ -19,8 +22,9 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage>
     with MVVMBinding<LoginVM, LoginPage> {
   final _formKey = GlobalKey<FormState>();
-  final _usernameController = TextEditingController(text: "toann@zen8labs.com");
-  final _passwordController = TextEditingController(text: "1234567890");
+  bool _isLoggedIn = false;
+  final _usernameController = TextEditingController(text: "vu12345");
+  final _passwordController = TextEditingController(text: "vu123");
 
   @override
   LoginVM onCreateVM() => LoginVM();
@@ -33,34 +37,175 @@ class _LoginPageState extends State<LoginPage>
     }).addTo(subscription);
   }
 
+  void _validate() {
+    if (_formKey.currentState != null && _formKey.currentState!.validate()) {
+      vm.input.login.add((_usernameController.text, _passwordController.text));
+    }
+  }
+
+  // void _showSuccessDialog() {
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         title: Text("Đăng ký thành công"),
+  //         content: Text("Tài khoản của bạn đã được đăng ký thành công."),
+  //         actions: [
+  //           TextButton(
+  //             onPressed: () {
+  //               Navigator.of(context).pop(); // Đóng hộp thoại
+  //               // Chuyển đến trang đăng nhập
+  //               Navigator.pushReplacement(
+  //                 context,
+  //                 MaterialPageRoute(
+  //                   builder: (context) =>
+  //                       LoginPage(), // Thay ThangDangNhap bằng trang đăng nhập thực tế của bạn
+  //                 ),
+  //               );
+  //             },
+  //             child: Text("Đi đến Đăng nhập"),
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
+
   @override
   Widget build(BuildContext context) {
     return LoadingWidget(
-      error: vm.errorTracker.asAppException(),
       isLoading: vm.activityTracker.isRunningAny(),
+      error: vm.errorTracker.asAppException(),
       child: Scaffold(
-        body: Form(
-          key: _formKey,
+        resizeToAvoidBottomInset: false,
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.white,
+          leading: IconButton(
+            onPressed: () {
+              context.router.pop();
+            },
+            icon: Icon(
+              Icons.arrow_back_ios,
+              size: 20,
+              color: Colors.black,
+            ),
+          ),
+        ),
+        body: SingleChildScrollView(
           child: Container(
-            alignment: Alignment.center,
-            padding: const EdgeInsets.symmetric(horizontal: 24),
+            height: MediaQuery.of(context).size.height,
+            width: double.infinity,
             child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  "Đăng nhập",
-                  style: AppTheme.textStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 18,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Expanded(
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Column(
+                          children: <Widget>[
+                            FadeAnimation(
+                                1.2,
+                                Text("Login",
+                                    style: TextStyle(
+                                        fontSize: 30,
+                                        fontWeight: FontWeight.bold))),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            FadeAnimation(
+                                1.4,
+                                Text("Login to your account",
+                                    style: TextStyle(
+                                        fontSize: 15, color: Colors.grey[700]))),
+                          ],
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 40),
+                          child: Column(
+                            children: <Widget>[
+                              FadeAnimation(
+                                  1.6,
+                                  makeInput(
+                                      label: "User",
+                                      controller: _usernameController,
+                                      validator: ValidationBuilder()
+                                          .maxLength(50)
+                                          .build())),
+                              FadeAnimation(
+                                  1.8,
+                                  makeInput(
+                                    label: "Password",
+                                    controller: _passwordController,
+                                    obscureText: true,
+                                    validator: ValidationBuilder()
+                                        .minLength(5)
+                                        .maxLength(50)
+                                        .build(),
+                                  )),
+                            ],
+                          ),
+                        ),
+                        FadeAnimation(
+                            2.0,
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 40),
+                              child: Container(
+                                padding: EdgeInsets.only(top: 3, left: 3),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(50),
+                                    border: Border(
+                                      bottom: BorderSide(color: Colors.black),
+                                      top: BorderSide(color: Colors.black),
+                                      left: BorderSide(color: Colors.black),
+                                      right: BorderSide(color: Colors.black),
+                                    )),
+                                child: MaterialButton(
+                                  minWidth: double.infinity,
+                                  height: 60,
+                                  onPressed: _validate,
+                                  color: Colors.greenAccent,
+                                  elevation: 0,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(50)),
+                                  child: Text(
+                                    _isLoggedIn ? "Logged In" : "Login",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 18),
+                                  ),
+                                ),
+                              ),
+                            )),
+                        FadeAnimation(
+                            2.2,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text("Don't have an account?"),
+                                Text("Sign up",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 18)),
+                              ],
+                            ))
+                      ],
+                    ),
                   ),
                 ),
-                const SizedBox(height: 16),
-                _usernameField(),
-                const SizedBox(height: 8),
-                _passwordField(),
-                const SizedBox(height: 16),
-                _loginButton(),
+                FadeAnimation(
+                    2.4,
+                    Container(
+                      height: MediaQuery.of(context).size.height / 3,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                        image: AssetImage('images/background.png'),
+                      )),
+                    ))
               ],
             ),
           ),
@@ -69,70 +214,38 @@ class _LoginPageState extends State<LoginPage>
     );
   }
 
-  Container _loginButton() {
-    return Container(
-      height: 56,
-      decoration: const BoxDecoration(
-        color: AppTheme.primaryColor,
-        borderRadius: BorderRadius.all(Radius.circular(30)),
-      ),
-      child: TextButton(
-        onPressed: () {
-          if (_formKey.currentState?.validate() == true) {
-            vm.input.login
-                .add((_usernameController.text, _passwordController.text));
-          }
-        },
-        child: Text(
-          "Đăng nhập",
-          style: AppTheme.textStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w600,
+  Widget makeInput({label, obscureText = false, validator, controller}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(label,
+            style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w400,
+                color: Colors.black87)),
+        SizedBox(
+          height: 5,
+        ),
+        TextFormField(
+          controller: controller,
+          obscureText: obscureText,
+          validator: validator,
+          decoration: InputDecoration(
+            contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+            enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey[400]!)),
+            border: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey[400]!)),
           ),
         ),
-      ),
+        SizedBox(
+          height: 30,
+        ),
+      ],
     );
   }
 
-  Widget _passwordField() {
-    return SecuredField(
-      controller: _passwordController,
-      icon: const Icon(Icons.key),
-      hintText: "Mật khẩu",
-      validator: (value) {
-        int length = value?.length ?? 0;
-        if (length < 6) {
-          return "Mật khẩu phải có ít nhất 6 ký tự";
-        }
-        return null;
-      },
-    );
-  }
 
-  Widget _usernameField() {
-    return TextFormField(
-      controller: _usernameController,
-      decoration: const InputDecoration(
-          filled: true,
-          fillColor: Color(0xFFF3F3F3),
-          prefixIcon: Icon(Icons.person),
-          hintText: "Số điện thoại/Email",
-          helperText: "",
-          border: InputBorder.none,
-          errorBorder: InputBorder.none,
-          enabledBorder: InputBorder.none,
-          focusedBorder: InputBorder.none,
-          disabledBorder: InputBorder.none,
-          focusedErrorBorder: InputBorder.none),
-      validator: (value) {
-        bool isValidEmail = value?.ex.isValidEmail() ?? false;
-        bool isValidPhone = value?.ex.isValidPhoneNumber() ?? false;
-        if (isValidPhone || isValidEmail) {
-          return null;
-        }
 
-        return "Số điện thoại hoặc email không hợp lệ";
-      },
-    );
-  }
+
 }

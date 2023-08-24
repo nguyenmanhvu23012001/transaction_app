@@ -1,19 +1,22 @@
-import 'credential.dart';
-import 'user.dart';
+import 'package:json_annotation/json_annotation.dart';
+import 'package:zen8app/models/sources/user_infor.dart';
 
+part 'login_response.g.dart';
+
+@JsonSerializable()
 class LoginResponse {
-  Credential credential;
-  User user;
+  final String accessToken;
+  final String refreshToken;
+  final UserInfo userInfo;
 
   LoginResponse({
-    required this.credential,
-    required this.user,
+    required this.accessToken,
+    required this.refreshToken,
+    required this.userInfo,
   });
 
-  factory LoginResponse.fromJson(Map<String, dynamic> json) {
-    return LoginResponse(
-      credential: Credential.fromJson(json),
-      user: User.fromJson(json["user"]),
-    );
-  }
+
+  factory LoginResponse.fromJson(Map<String, dynamic> json) =>
+      _$LoginResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$LoginResponseToJson(this);
 }

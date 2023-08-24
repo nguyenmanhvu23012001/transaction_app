@@ -25,6 +25,21 @@ extension StreamDecoding<R extends Response> on Stream<R> {
       return (data as List).map((e) => decoding(e)).toList();
     });
   }
+
+  Stream<List<T>> decodeListWithData<T>(T Function(dynamic json) decoding,
+      {String? keyPath}) {
+    return map((res) {
+
+      var data = res.data['data'];
+      print('-->');
+      print(data);
+      final paths = keyPath?.split(".") ?? [];
+      for (var path in paths) {
+        data = data[path];
+      }
+      return (data as List).map((e) => decoding(e)).toList();
+    });
+  }
 }
 
 extension DioConfig on Dio {

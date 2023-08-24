@@ -40,7 +40,7 @@ class _Zen8appState extends State<Zen8app> {
   Future<void> _logout(String reason) async {
     print("----- Force logout reason: $reason");
     await Session.endAuthenticatedSession();
-    await _appRouter.replaceAll([const LoginRoute()]);
+    await _appRouter.replaceAll([const WellComeRoute(), const LoginRoute()]);
   }
 
   @override

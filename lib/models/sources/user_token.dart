@@ -19,5 +19,4 @@ class UserToken {
       _$UserTokenFromJson(json);
   Map<String, dynamic> toJson() => _$UserTokenToJson(this);
 }
-String a = 'kjadskjdas';
 

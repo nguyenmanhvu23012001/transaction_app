@@ -8,6 +8,7 @@ class UserInfo {
   String name;
   String role;
   String email;
+  @JsonKey(name: "number_phone")
   String phoneNumber;
 
   UserInfo({

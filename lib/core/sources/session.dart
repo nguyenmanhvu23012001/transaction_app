@@ -3,14 +3,15 @@ import 'package:dio/dio.dart';
 import 'package:zen8app/utils/utils.dart';
 import 'package:zen8app/models/models.dart';
 import 'package:zen8app/core/core.dart';
+import '../../models/sources/user_infor.dart';
 import 'authenticator.dart';
 
 class Session {
   static final publicClient = Dio();
   static final authClient = Dio();
 
-  static User? _currentUser;
-  static User? get currentUser => _currentUser;
+  static UserInfo? _currentUser;
+  static UserInfo? get currentUser => _currentUser;
   static bool get isLoggedIn => _currentUser != null;
 
   Session._();
@@ -26,7 +27,7 @@ class Session {
     //load previous credentials
     _currentUser = await store.getValue(
       LocalStoreKey.user,
-      transform: (value) => User.fromJson(jsonDecode(value)),
+      transform: (value) => UserInfo.fromJson(jsonDecode(value)),
     );
 
     final credential = await store.getValue(
@@ -46,16 +47,16 @@ class Session {
     var store = DI.resolve<LocalStore>();
     await store.setValue(
       LocalStoreKey.user,
-      jsonEncode(response.user),
+      jsonEncode(response.userInfo),
     );
-    _currentUser = response.user;
+    _currentUser = response.userInfo;
 
     await store.setValue(
       LocalStoreKey.credential,
-      jsonEncode(response.credential),
+      jsonEncode(Credential(token: response.accessToken)),
     );
     authClient.setAuthCredential(
-      credential: response.credential,
+      credential: response.accessToken,
       authenticator: DefaultAuthenticator(),
     );
   }

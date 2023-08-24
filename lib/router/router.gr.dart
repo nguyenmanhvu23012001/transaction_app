@@ -21,10 +21,22 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const LoginPage(),
       );
     },
+    WellComeRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const WellComePage(),
+      );
+    },
     HomeRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const HomePage(),
+      );
+    },
+    TransactionRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const TransactionPage(),
       );
     },
   };
@@ -45,6 +57,20 @@ class LoginRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [WellComePage]
+class WellComeRoute extends PageRouteInfo<void> {
+  const WellComeRoute({List<PageRouteInfo>? children})
+      : super(
+          WellComeRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'WellComeRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
 /// [HomePage]
 class HomeRoute extends PageRouteInfo<void> {
   const HomeRoute({List<PageRouteInfo>? children})
@@ -54,6 +80,20 @@ class HomeRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'HomeRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [TransactionPage]
+class TransactionRoute extends PageRouteInfo<void> {
+  const TransactionRoute({List<PageRouteInfo>? children})
+      : super(
+          TransactionRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'TransactionRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

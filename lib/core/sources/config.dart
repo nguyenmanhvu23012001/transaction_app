@@ -21,7 +21,7 @@ class Config {
   }
 
   static Config get dev => Config(
-        baseUrl: 'http://myzen8labs.try0.xyz',
+        baseUrl: 'http://192.168.123.226:8080',
       );
 
   static Config get stg => Config(
