@@ -56,7 +56,7 @@ class Session {
       jsonEncode(Credential(token: response.accessToken)),
     );
     authClient.setAuthCredential(
-      credential: response.accessToken,
+      credential: Credential(token: response.accessToken),
       authenticator: DefaultAuthenticator(),
     );
   }

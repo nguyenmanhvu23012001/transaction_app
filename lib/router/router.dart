@@ -2,10 +2,14 @@ import 'package:auto_route/auto_route.dart';
 import 'package:zen8app/core/core.dart';
 import 'package:zen8app/app/pages/auth/login/login_page.dart';
 import 'package:zen8app/app/pages/main/home/home_page.dart';
+import 'package:zen8app/models/sources/wallet.dart';
 
+import '../app/pages/auth/wallet/wallet_page.dart';
 import '../app/pages/auth/wellcome_page.dart';
 import '../app/pages/main/history/history_page.dart';
+import '../app/pages/main/transaction/transaction_detail.dart';
 import '../app/pages/main/transaction/transaction_page.dart';
+import '../models/sources/transaction.dart';
 export 'package:auto_route/auto_route.dart';
 
 part 'router.gr.dart';
@@ -30,5 +34,7 @@ class AppRouter extends _$AppRouter {
     AutoRoute(page: LoginRoute.page),
     AutoRoute(page: TransactionRoute.page),
     AutoRoute(page: HistoryRoute.page),
+    AutoRoute(page: WalletRoute.page),
+    AutoRoute(page: TransactionDetailRoute.page),
   ];
 }

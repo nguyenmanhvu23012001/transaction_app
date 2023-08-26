@@ -27,7 +27,7 @@ class DefaultAuthenticator extends Authenticator<Credential> {
 
   @override
   Future<Credential> refreshCredential(Credential oldCredential, Dio client) {
-    return client.post("/auth/refresh/").then((response) {
+    return client.post("/auth/refresh-token/").then((response) {
       final credential = Credential.fromJson(response.data);
       DI
           .resolve<LocalStore>()

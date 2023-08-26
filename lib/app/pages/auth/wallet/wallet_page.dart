@@ -1,30 +1,28 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rxdart/src/utils/composite_subscription.dart';
-import 'package:zen8app/app/pages/main/transaction/transaction_dialog.dart';
-import 'package:zen8app/app/pages/main/transaction/transaction_vm.dart';
+import 'package:zen8app/app/pages/auth/wallet/wallet_vm.dart';
 import 'package:zen8app/core/core.dart';
-import 'package:zen8app/router/router.dart';
 import 'package:zen8app/utils/helpers/mvvm_binding.dart';
-import 'package:zen8app/widgets/widgets.dart';
-import '../../../../models/sources/transaction.dart';
+import 'package:zen8app/widgets/sources/loading_widget.dart';
+
+import '../../../../models/sources/wallet.dart';
 import '../../../../widgets/sources/drawer_bar.dart';
 import '../../../../widgets/sources/find_inspritation_section.dart';
 @RoutePage()
-class TransactionPage extends StatefulWidget {
-  const TransactionPage({Key? key}) : super(key: key);
+class WalletPage extends StatefulWidget {
+  const WalletPage({Key? key}) : super(key: key);
 
   @override
-  State<TransactionPage> createState() => _TransactionPageState();
+  State<WalletPage> createState() => _WalletPageState();
 }
 
-class _TransactionPageState extends State<TransactionPage> with MVVMBinding<TransactionVM,TransactionPage>{
-
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+class _WalletPageState extends State<WalletPage> with MVVMBinding<WalletVM,WalletPage>{
   late BuildContext scaffoldContext;
-  List<TransactionData> _transactions = [];
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  bool isLoading = false;
+  List<WalletModel> _wallets = [];
 
   @override
   void initState() {
@@ -57,7 +55,7 @@ class _TransactionPageState extends State<TransactionPage> with MVVMBinding<Tran
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            _showTransactionDialog(scaffoldContext);
+            // _showWalletDialog(scaffoldContext);
           },
           tooltip: 'Add Transaction',
           child: Icon(
@@ -86,20 +84,18 @@ class _TransactionPageState extends State<TransactionPage> with MVVMBinding<Tran
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       const Text(
-                        'Transactions',
+                        'Wallet Transaction',
                         style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 20),
                       ListView.builder(
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
-                        itemCount: _transactions.length,
+                        itemCount: _wallets.length,
                         itemBuilder: (BuildContext context, int index) {
-                          var transaction = _transactions[index];
+                          var _wallet = _wallets[index];
                           return GestureDetector(
-                            onTap: () {
-                              context.router.push(TransactionDetailRoute(transaction: transaction));
-                            },
+                            onTap: () {},
                             child: Padding(
                               padding: const EdgeInsets.only(bottom: 20.0),
                               child: Container(
@@ -119,11 +115,26 @@ class _TransactionPageState extends State<TransactionPage> with MVVMBinding<Tran
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    _buildInfoRow(Icons.person_outline, Colors.blue, 'Buyer',transaction.buyer.username /* transaction.buyer.name */),
+                                    _buildInfoRow(
+                                      Icons.person_outline,
+                                      Colors.blue,
+                                      'User',
+                                      _wallet.user,
+                                    ),
                                     const SizedBox(height: 15),
-                                    _buildInfoRow(Icons.storefront, Colors.green, 'Seller',  transaction.seller.username),
+                                    _buildInfoRow(
+                                      Icons.storefront,
+                                      Colors.green,
+                                      'Deposit',
+                                      _wallet.deposit.toString(),
+                                    ),
                                     const SizedBox(height: 15),
-                                    _buildInfoRow(Icons.shopping_bag, Colors.orange, 'Goods', transaction.goods),
+                                    _buildInfoRow(
+                                      Icons.shopping_bag,
+                                      Colors.orange,
+                                      'Debit',
+                                      _wallet.debit.toString(),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -131,7 +142,7 @@ class _TransactionPageState extends State<TransactionPage> with MVVMBinding<Tran
                           );
                         },
                       ),
-                    ],
+                    ], // Add this closing bracket
                   ),
                 ),
               ],
@@ -176,32 +187,32 @@ class _TransactionPageState extends State<TransactionPage> with MVVMBinding<Tran
       ],
     );
   }
-  void _showTransactionDialog(BuildContext context){
-    showDialog(
-        context: context,
-        builder: (BuildContext context){
-          return AddTransactionFormModal();
-        }
-    );
-  }
 
   @override
   void onBindingVM(CompositeSubscription subscription) {
-    vm.output.response.listen((value) {
-      setState(() {
-        _transactions = value ;
-      });
-    }).addTo(subscription);
-
-    reload();
+      vm.output.response.listen((value) {
+        setState(() {
+          _wallets =value;
+        });
+      }).addTo(subscription);
+      return reload();
   }
 
   @override
-  TransactionVM onCreateVM() {
-    return TransactionVM();
+  WalletVM onCreateVM() {
+    return WalletVM();
   }
-
   void reload(){
     vm.input.reload.add(null);
   }
+
+  // Uncomment this method
+  // void _showWalletDialog(BuildContext context) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AddWalletFormModal();
+  //     },
+  //   );
+  // }
 }

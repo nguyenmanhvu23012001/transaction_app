@@ -53,7 +53,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             leading: Icon(Icons.account_balance_wallet),
             title: Text('Wallet', style: TextStyle(fontSize: 16)),
             onTap: () {
-
+                  context.router.push(WalletRoute());
             },
           ),
           ListTile(

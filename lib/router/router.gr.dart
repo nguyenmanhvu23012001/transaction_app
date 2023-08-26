@@ -21,10 +21,22 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const LoginPage(),
       );
     },
+    WalletRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const WalletPage(),
+      );
+    },
     WellComeRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const WellComePage(),
+      );
+    },
+    HistoryRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const HistoryPage(),
       );
     },
     HomeRoute.name: (routeData) {
@@ -33,16 +45,17 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const HomePage(),
       );
     },
+    TransactionDetailRoute.name: (routeData) {
+      final args = routeData.argsAs<TransactionDetailRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: TransactionDetailPage(transaction: args.transaction),
+      );
+    },
     TransactionRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const TransactionPage(),
-      );
-    },
-    HistoryRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const HistoryPage(),
       );
     },
   };
@@ -63,6 +76,20 @@ class LoginRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [WalletPage]
+class WalletRoute extends PageRouteInfo<void> {
+  const WalletRoute({List<PageRouteInfo>? children})
+      : super(
+          WalletRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'WalletRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
 /// [WellComePage]
 class WellComeRoute extends PageRouteInfo<void> {
   const WellComeRoute({List<PageRouteInfo>? children})
@@ -72,6 +99,20 @@ class WellComeRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'WellComeRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [HistoryPage]
+class HistoryRoute extends PageRouteInfo<void> {
+  const HistoryRoute({List<PageRouteInfo>? children})
+      : super(
+          HistoryRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'HistoryRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
@@ -91,6 +132,35 @@ class HomeRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [TransactionDetailPage]
+class TransactionDetailRoute extends PageRouteInfo<TransactionDetailRouteArgs> {
+  TransactionDetailRoute({
+    required TransactionData transaction,
+    List<PageRouteInfo>? children,
+  }) : super(
+          TransactionDetailRoute.name,
+          args: TransactionDetailRouteArgs(transaction: transaction),
+          initialChildren: children,
+        );
+
+  static const String name = 'TransactionDetailRoute';
+
+  static const PageInfo<TransactionDetailRouteArgs> page =
+      PageInfo<TransactionDetailRouteArgs>(name);
+}
+
+class TransactionDetailRouteArgs {
+  const TransactionDetailRouteArgs({required this.transaction});
+
+  final TransactionData transaction;
+
+  @override
+  String toString() {
+    return 'TransactionDetailRouteArgs{transaction: $transaction}';
+  }
+}
+
+/// generated route for
 /// [TransactionPage]
 class TransactionRoute extends PageRouteInfo<void> {
   const TransactionRoute({List<PageRouteInfo>? children})
@@ -100,20 +170,6 @@ class TransactionRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'TransactionRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [HistoryPage]
-class HistoryRoute extends PageRouteInfo<void> {
-  const HistoryRoute({List<PageRouteInfo>? children})
-      : super(
-          HistoryRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'HistoryRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
