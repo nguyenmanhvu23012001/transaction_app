@@ -8,10 +8,25 @@ import 'package:zen8app/utils/utils.dart';
 import 'package:zen8app/models/models.dart';
 
 class MainService {
+  
+  // Transaction Services
   Stream<List<TransactionData>> getTransaction() {
     return Session.authClient
         .getStream('/slink/v1/transactions')
         .decodeListWithData((json) => TransactionData.fromJson(json));
+  }
+  
+  Stream addTransaciton(TransactionData transaction ){
+    return Session.authClient.postStream('/slink/v1/transactions',data:{
+      "buyer": transaction.buyer.id,
+      "seller": transaction.seller.id,
+      "goods": transaction.goods,
+      "transaction_money" : transaction.transactionMoney,
+      "deposit" : transaction.deposit
+    }).decode((json) {
+      transaction.id = json["data"]['_id'];
+      return transaction;
+    });
   }
 
   Stream<List<HistoryModel>> getHistory() {

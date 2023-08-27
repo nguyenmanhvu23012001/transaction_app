@@ -7,25 +7,27 @@ import 'package:zen8app/utils/helpers/disposable.dart';
 import '../../../../api/sources/main_service.dart';
 import '../../../../utils/helpers/di.dart';
 
-class TransactionVMInput extends Disposable{
+class TransactionVMInput extends Disposable {
   final reload = PublishSubject();
   @override
   void dispose() {
     reload.close();
     super.dispose();
   }
-
 }
-class TransactionVMOutput extends Disposable{
+
+class TransactionVMOutput extends Disposable {
   final response = BehaviorSubject<List<TransactionData>>();
+
+
   @override
   void dispose() {
     response.close();
-    super.dispose();
   }
 }
-class TransactionVM extends BaseVM<TransactionVMInput,TransactionVMOutput>{
-  TransactionVM() : super(TransactionVMInput(),TransactionVMOutput());
+
+class TransactionVM extends BaseVM<TransactionVMInput, TransactionVMOutput> {
+  TransactionVM() : super(TransactionVMInput(), TransactionVMOutput());
 
   @override
   CompositeSubscription? connect() {
@@ -33,14 +35,15 @@ class TransactionVM extends BaseVM<TransactionVMInput,TransactionVMOutput>{
     final mainService = DI.resolve<MainService>();
 
     input.reload
-        .switchMap((param) => mainService.getTransaction()
-        .trackActivity("loading", activityTracker))
+        .switchMap((param) => mainService
+            .getTransaction()
+            .trackActivity("loading", activityTracker))
         .handleErrorBy(errorTracker)
         .bindTo(output.response)
         .addTo(rxBag);
 
+
+
     return rxBag;
   }
-
-
 }

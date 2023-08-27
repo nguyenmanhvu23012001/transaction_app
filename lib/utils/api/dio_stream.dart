@@ -31,8 +31,6 @@ extension StreamDecoding<R extends Response> on Stream<R> {
     return map((res) {
 
       var data = res.data['data'];
-      print('-->');
-      print(data);
       final paths = keyPath?.split(".") ?? [];
       for (var path in paths) {
         data = data[path];

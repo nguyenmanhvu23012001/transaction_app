@@ -11,19 +11,23 @@ import '../../../../utils/helpers/di.dart';
 
 class TransactionDialogVMInput extends Disposable{
   final reload = PublishSubject();
+  final add = PublishSubject<TransactionData>();
+
   @override
   void dispose() {
     reload.close();
-    super.dispose();
+    add.close();
   }
 
 }
 class TransactionDialogVMOutput extends Disposable{
   final response = BehaviorSubject<List<User>>();
+  final addResponse = BehaviorSubject<TransactionData>();
+
   @override
   void dispose() {
+      addResponse.close();
     response.close();
-    super.dispose();
   }
 }
 class TransactionDialogVM extends BaseVM<TransactionDialogVMInput,TransactionDialogVMOutput>{
@@ -41,6 +45,13 @@ class TransactionDialogVM extends BaseVM<TransactionDialogVMInput,TransactionDia
         .bindTo(output.response)
         .addTo(rxBag);
 
+    input.add
+        .switchMap((value) => mainService
+        .addTransaciton(value)
+        .trackActivity("loading", activityTracker))
+        .handleErrorBy(errorTracker)
+        .bindTo(output.addResponse)
+        .addTo(rxBag);
     return rxBag;
   }
 

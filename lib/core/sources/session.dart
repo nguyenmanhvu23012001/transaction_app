@@ -21,6 +21,7 @@ class Session {
     //config network
     publicClient.options.baseUrl = Config.currentConfig.baseUrl;
     authClient.options.baseUrl = Config.currentConfig.baseUrl;
+    authClient.options.contentType ='application/json';
 
     var store = DI.resolve<LocalStore>();
 
