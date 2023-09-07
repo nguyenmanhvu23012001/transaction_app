@@ -35,7 +35,6 @@ class LoginVM extends BaseVM<LoginVMInput, LoginVMOutput> {
         .handleErrorBy(errorTracker)
         .bindTo(output.response)
         .addTo(rxBag);
-
     return rxBag;
   }
 }

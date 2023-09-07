@@ -35,8 +35,7 @@ class _TransactionPageState extends State<TransactionPage> with MVVMBinding<Tran
   Widget build(BuildContext context) {
     scaffoldContext = context;
     return LoadingWidget(
-      isLoading: vm.activityTracker.isRunningAny(),
-      error: vm.errorTracker.asAppException(),
+
       child: Scaffold(
         key: _scaffoldKey,
         backgroundColor: Color.fromRGBO(244, 243, 243, 1),

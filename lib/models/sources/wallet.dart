@@ -1,12 +1,13 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:zen8app/models/sources/user.dart';
 part 'wallet.g.dart';
 @JsonSerializable()
 class WalletModel {
   @JsonKey(name: "_id")
   String id;
-  String user;
-  int deposit;
-  int debit;
+  final User user;
+  double deposit;
+  double debit;
   @JsonKey(name: "created_at")
   String createdAt;
   @JsonKey(name: "updated_at")

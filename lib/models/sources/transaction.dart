@@ -4,7 +4,7 @@ part 'transaction.g.dart';
 @JsonSerializable()
 class TransactionData {
   @JsonKey(name: "_id")
-   String id;
+  String id;
   final User buyer;
   final User seller;
   final String goods;

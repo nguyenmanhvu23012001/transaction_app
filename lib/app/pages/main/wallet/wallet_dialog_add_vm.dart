@@ -1,6 +1,7 @@
 import 'package:rxdart/rxdart.dart';
 import 'package:zen8app/models/sources/transaction.dart';
 import 'package:zen8app/models/sources/user_infor.dart';
+import 'package:zen8app/models/sources/wallet.dart';
 import 'package:zen8app/utils/extensions/stream_ext.dart';
 import 'package:zen8app/utils/helpers/base_vm.dart';
 import 'package:zen8app/utils/helpers/disposable.dart';
@@ -9,9 +10,9 @@ import '../../../../api/sources/main_service.dart';
 import '../../../../models/sources/user.dart';
 import '../../../../utils/helpers/di.dart';
 
-class TransactionDialogVMInput extends Disposable{
+class WalletDialogVMInput extends Disposable{
   final reload = PublishSubject();
-  final add = PublishSubject<TransactionData>();
+  final add = PublishSubject<WalletModel>();
 
   @override
   void dispose() {
@@ -20,9 +21,9 @@ class TransactionDialogVMInput extends Disposable{
   }
 
 }
-class TransactionDialogVMOutput extends Disposable{
+class WalletDialogVMOutput extends Disposable{
   final response = BehaviorSubject<List<User>>();
-  final addResponse = BehaviorSubject<TransactionData>();
+  final addResponse = BehaviorSubject<WalletModel>();
 
   @override
   void dispose() {
@@ -30,8 +31,8 @@ class TransactionDialogVMOutput extends Disposable{
     response.close();
   }
 }
-class TransactionDialogVM extends BaseVM<TransactionDialogVMInput,TransactionDialogVMOutput>{
-  TransactionDialogVM() : super(TransactionDialogVMInput(),TransactionDialogVMOutput());
+class WalletDialogVM extends BaseVM<WalletDialogVMInput,WalletDialogVMOutput>{
+  WalletDialogVM() : super(WalletDialogVMInput(),WalletDialogVMOutput());
 
   @override
   CompositeSubscription? connect() {
@@ -47,13 +48,11 @@ class TransactionDialogVM extends BaseVM<TransactionDialogVMInput,TransactionDia
 
     input.add
         .switchMap((value) => mainService
-        .addTransaciton(value)
+        .addWallet(value)
         .trackActivity("loading", activityTracker))
         .handleErrorBy(errorTracker)
         .bindTo(output.addResponse)
         .addTo(rxBag);
     return rxBag;
   }
-
-
 }

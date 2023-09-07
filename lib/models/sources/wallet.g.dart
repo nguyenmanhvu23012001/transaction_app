@@ -8,9 +8,9 @@ part of 'wallet.dart';
 
 WalletModel _$WalletModelFromJson(Map<String, dynamic> json) => WalletModel(
       id: json['_id'] as String,
-      user: json['user'] as String,
-      deposit: json['deposit'] as int,
-      debit: json['debit'] as int,
+      user: User.fromJson(json['user'] as Map<String, dynamic>),
+      deposit: (json['deposit'] as num).toDouble(),
+      debit: (json['debit'] as num).toDouble(),
       createdAt: json['created_at'] as String,
       updatedAt: json['updated_at'] as String,
     );

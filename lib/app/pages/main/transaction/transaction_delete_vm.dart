@@ -1,4 +1,6 @@
 import 'package:rxdart/rxdart.dart';
+import 'package:zen8app/app/pages/main/transaction/transaction_dialog_update_vm.dart';
+import 'package:zen8app/models/models.dart';
 import 'package:zen8app/models/sources/transaction.dart';
 import 'package:zen8app/utils/extensions/stream_ext.dart';
 import 'package:zen8app/utils/helpers/base_vm.dart';
@@ -7,38 +9,40 @@ import 'package:zen8app/utils/helpers/disposable.dart';
 import '../../../../api/sources/main_service.dart';
 import '../../../../utils/helpers/di.dart';
 
-class TransactionVMInput extends Disposable {
-  final reload = PublishSubject();
+class TransactionDeleteVMInput extends Disposable{
+  final delete = PublishSubject<String>();
   @override
   void dispose() {
-    reload.close();
+    delete.close();
     super.dispose();
   }
 }
 
-class TransactionVMOutput extends Disposable {
-  final response = BehaviorSubject<List<TransactionData>>();
+class TransactionDeleteVMOutput extends Disposable{
+  final response = BehaviorSubject();
   @override
   void dispose() {
     response.close();
+    super.dispose();
   }
 }
-
-class TransactionVM extends BaseVM<TransactionVMInput, TransactionVMOutput> {
-  TransactionVM() : super(TransactionVMInput(), TransactionVMOutput());
-
+class TransactionDeleteVM extends BaseVM<TransactionDeleteVMInput,TransactionDeleteVMOutput>{
+  TransactionDeleteVM() : super(TransactionDeleteVMInput(),TransactionDeleteVMOutput());
   @override
   CompositeSubscription? connect() {
     final rxBag = CompositeSubscription();
     final mainService = DI.resolve<MainService>();
 
-    input.reload
-        .switchMap((param) => mainService
-            .getTransaction()
-            .trackActivity("loading", activityTracker))
+    input.delete
+        .switchMap((value) => mainService
+        .deleteTransaction(value)
+        .trackActivity("loading", activityTracker))
         .handleErrorBy(errorTracker)
         .bindTo(output.response)
         .addTo(rxBag);
     return rxBag;
   }
+
+
+
 }

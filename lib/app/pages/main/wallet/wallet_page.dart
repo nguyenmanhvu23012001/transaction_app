@@ -2,8 +2,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rxdart/src/utils/composite_subscription.dart';
-import 'package:zen8app/app/pages/auth/wallet/wallet_vm.dart';
+import 'package:zen8app/app/pages/main/wallet/wallet_dialog_add.dart';
+import 'package:zen8app/app/pages/main/wallet/wallet_vm.dart';
 import 'package:zen8app/core/core.dart';
+import 'package:zen8app/router/router.dart';
 import 'package:zen8app/utils/helpers/mvvm_binding.dart';
 import 'package:zen8app/widgets/sources/loading_widget.dart';
 
@@ -19,7 +21,6 @@ class WalletPage extends StatefulWidget {
 }
 
 class _WalletPageState extends State<WalletPage> with MVVMBinding<WalletVM,WalletPage>{
-  late BuildContext scaffoldContext;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool isLoading = false;
   List<WalletModel> _wallets = [];
@@ -31,7 +32,6 @@ class _WalletPageState extends State<WalletPage> with MVVMBinding<WalletVM,Walle
 
   @override
   Widget build(BuildContext context) {
-    scaffoldContext = context;
     return LoadingWidget(
       isLoading: vm.activityTracker.isRunningAny(),
       error: vm.errorTracker.asAppException(),
@@ -55,7 +55,9 @@ class _WalletPageState extends State<WalletPage> with MVVMBinding<WalletVM,Walle
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            // _showWalletDialog(scaffoldContext);
+            print("------>");
+            _showWalletAddDialog(context);
+            print("Da an");
           },
           tooltip: 'Add Transaction',
           child: Icon(
@@ -95,7 +97,9 @@ class _WalletPageState extends State<WalletPage> with MVVMBinding<WalletVM,Walle
                         itemBuilder: (BuildContext context, int index) {
                           var _wallet = _wallets[index];
                           return GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              context.router.push(WalletDetailRoute(wallet: _wallet));
+                            },
                             child: Padding(
                               padding: const EdgeInsets.only(bottom: 20.0),
                               child: Container(
@@ -119,7 +123,7 @@ class _WalletPageState extends State<WalletPage> with MVVMBinding<WalletVM,Walle
                                       Icons.person_outline,
                                       Colors.blue,
                                       'User',
-                                      _wallet.user,
+                                      _wallet.user.username,
                                     ),
                                     const SizedBox(height: 15),
                                     _buildInfoRow(
@@ -187,7 +191,18 @@ class _WalletPageState extends State<WalletPage> with MVVMBinding<WalletVM,Walle
       ],
     );
   }
-
+  void _showWalletAddDialog(BuildContext context){
+    try {
+      showDialog(
+          context: context,
+          builder: (BuildContext context){
+            return AddWalletFormModal();
+          }
+      );
+    } catch (e) {
+      print("Error: $e");
+    }
+  }
   @override
   void onBindingVM(CompositeSubscription subscription) {
       vm.output.response.listen((value) {
@@ -206,13 +221,5 @@ class _WalletPageState extends State<WalletPage> with MVVMBinding<WalletVM,Walle
     vm.input.reload.add(null);
   }
 
-  // Uncomment this method
-  // void _showWalletDialog(BuildContext context) {
-  //   showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return AddWalletFormModal();
-  //     },
-  //   );
-  // }
+
 }

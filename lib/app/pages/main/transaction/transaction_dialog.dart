@@ -21,9 +21,9 @@ class _AddTransactionFormModalState extends State<AddTransactionFormModal>
     with MVVMBinding<TransactionDialogVM, AddTransactionFormModal> {
   User? _selectedBuyer;
   User? _selectedSeller;
-  final TextEditingController goods = TextEditingController(text: "halo");
-  final TextEditingController transactionMoney = TextEditingController(text: "123");
-  final TextEditingController deposit = TextEditingController(text: "14");
+  final TextEditingController goods = TextEditingController();
+  final TextEditingController transactionMoney = TextEditingController();
+  final TextEditingController deposit = TextEditingController();
 
 
   List<User> _users = [];
@@ -230,7 +230,7 @@ class _AddTransactionFormModalState extends State<AddTransactionFormModal>
     reload();
 
     vm.output.addResponse.listen((value) {
-      context.router.pop();
+      context.router.replaceAll([HomeRoute(),TransactionRoute()],updateExistingRoutes: false);
 
     });
   }

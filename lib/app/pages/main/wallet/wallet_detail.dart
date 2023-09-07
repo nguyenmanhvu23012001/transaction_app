@@ -1,23 +1,25 @@
-import 'package:auto_route/auto_route.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:rxdart/src/utils/composite_subscription.dart';
-import 'package:zen8app/app/pages/main/transaction/transaction_delete_vm.dart';
-import 'package:zen8app/app/pages/main/transaction/transaction_dialog_update.dart';
-import 'package:zen8app/models/sources/transaction.dart';
-import 'package:zen8app/router/router.dart';
+import 'package:rxdart/rxdart.dart';
+import 'package:zen8app/app/pages/main/wallet/wallet_delete_vm.dart';
+import 'package:zen8app/models/sources/wallet.dart';
 import 'package:zen8app/utils/helpers/mvvm_binding.dart';
+import 'package:zen8app/widgets/sources/custom_appbar.dart';
 
-import '../../../../widgets/sources/custom_appbar.dart';
+import '../../../../router/router.dart';
+
 @RoutePage()
-class TransactionDetailPage extends StatefulWidget {
-  final TransactionData transaction;
-  TransactionDetailPage({required this.transaction});
-
+class WalletDetailPage extends StatefulWidget {
+  final WalletModel wallet;
+  WalletDetailPage({required this.wallet});
   @override
-  State<TransactionDetailPage> createState() => _TransactionDetailPageState();
+  _WalletDetailPageState createState() => _WalletDetailPageState();
 }
 
-class _TransactionDetailPageState extends State<TransactionDetailPage> with MVVMBinding<TransactionDeleteVM,TransactionDetailPage> {
+class _WalletDetailPageState extends State<WalletDetailPage>
+    with MVVMBinding<WalletDeleteVM, WalletDetailPage> {
+  late BuildContext scaffoldContext;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,52 +54,38 @@ class _TransactionDetailPageState extends State<TransactionDetailPage> with MVVM
                       _buildInfoRow(
                         Icons.person_outline,
                         Colors.blue,
-                        'Buyer',
-                        widget.transaction.buyer.username,
+                        'User',
+                        widget.wallet.user.username,
                       ),
                       SizedBox(height: 20.0),
                       _buildInfoRow(
-                        Icons.storefront,
-                        Colors.green,
-                        'Seller',
-                        widget.transaction.seller.username,
-                      ),
-                      SizedBox(height: 20.0),
-                      _buildInfoRow(
-                        Icons.shopping_bag,
+                        Icons.monetization_on,
                         Colors.orange,
-                        'Goods',
-                        widget.transaction.goods,
+                        'Deposit',
+                        widget.wallet.deposit.toString(),
                       ),
                       SizedBox(height: 20.0),
                       _buildInfoRow(
                         Icons.monetization_on,
                         Colors.teal,
-                        'Transaction Money',
-                        widget.transaction.transactionMoney.toString(),
+                        'Debit',
+                        widget.wallet.debit.toString(),
                       ),
                       SizedBox(height: 20.0),
                       _buildInfoRow(
                         Icons.account_balance_wallet,
                         Colors.deepOrange,
-                        'Deposit',
-                        widget.transaction.deposit.toString(),
-                      ),
-                      SizedBox(height: 20.0),
-                      _buildInfoRow(
-                        Icons.access_time,
-                        Colors.purple,
                         'Created At',
-                        widget.transaction.createdAt.toString(),
+                        widget.wallet.createdAt.toString(),
                       ),
                       SizedBox(height: 20.0),
                       GestureDetector(
                         onTap: () {
-                          showDialog(
-                            context: context,
-                            builder: (context) => UpdateTransactionFormModal(
-                              transaction: widget.transaction,),
-                          );
+                          // showDialog(
+                          //   context: context,
+                          //   builder: (context) => UpdateTransactionFormModal(
+                          //     transaction: widget.wallet,),
+                          // );
                         },
                         child: _buildInfoRow(
                           Icons.edit,
@@ -107,40 +95,39 @@ class _TransactionDetailPageState extends State<TransactionDetailPage> with MVVM
                         ),
                       ),
                       SizedBox(height: 20.0),
-                         GestureDetector(
-                          onTap: () {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: Text('Confirm Delete'),
-                                  content: Text('Are you sure you want to delete this transaction?'),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                       vm.input.delete.add(widget.transaction.id);
-                                      },
-                                      child: Text('Delete'),
-                                    ),
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.pop(context); // Close the dialog
-                                      },
-                                      child: Text('Cancel'),
-                                    ),
-                                  ],
-                                );
-                              },
+                     GestureDetector(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('Confirm Delete'),
+                              content: Text('Are you sure you want to delete this wallet?'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    vm.input.delete.add(widget.wallet.id);
+                                  },
+                                  child: Text('Delete'),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context); // Close the dialog
+                                  },
+                                  child: Text('Cancel'),
+                                ),
+                              ],
                             );
                           },
+                        );
+                      },
                         child: _buildInfoRow(
                           Icons.delete,
                           Colors.deepOrange,
                           'Delete',
                           'Delete Transaction',
                         ),
-
-                      ),
+                      )
 
                     ],
                   ),
@@ -191,13 +178,14 @@ class _TransactionDetailPageState extends State<TransactionDetailPage> with MVVM
 
   @override
   void onBindingVM(CompositeSubscription subscription) {
-   vm.output.response.listen((value) {
-     context.router.replaceAll([HomeRoute(),TransactionRoute()],updateExistingRoutes: false);
-   }).addTo(subscription);
+    vm.output.response.listen((value) {
+      context.router.replaceAll([HomeRoute(), WalletRoute()],
+          updateExistingRoutes: false);
+    }).addTo(subscription);
   }
 
   @override
-  TransactionDeleteVM onCreateVM() {
-    return TransactionDeleteVM();
+  WalletDeleteVM onCreateVM() {
+    return WalletDeleteVM();
   }
 }

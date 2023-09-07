@@ -35,6 +35,7 @@ class _LoginPageState extends State<LoginPage>
       await Session.startAuthenticatedSession(response);
       context.router.replaceAll([HomeRoute()]);
     }).addTo(subscription);
+
   }
 
   void _validate() {
@@ -187,12 +188,23 @@ class _LoginPageState extends State<LoginPage>
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Text("Don't have an account?"),
-                                Text("Sign up",
+                                GestureDetector(
+                                  onTap: () {
+                                   context.router.push(SignUpRoute());
+                                  },
+                                  child: Text(
+                                    "Sign up",
                                     style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 18)),
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 18,
+                                      color: Colors.blue, // You can set the color to indicate it's tappable
+                                    ),
+                                  ),
+                                ),
                               ],
-                            ))
+                            )
+
+                        )
                       ],
                     ),
                   ),

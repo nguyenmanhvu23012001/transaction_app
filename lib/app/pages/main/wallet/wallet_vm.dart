@@ -1,5 +1,5 @@
 import 'package:rxdart/rxdart.dart';
-import 'package:zen8app/models/sources/transaction.dart';
+import 'package:zen8app/models/sources/wallet.dart';
 import 'package:zen8app/utils/extensions/stream_ext.dart';
 import 'package:zen8app/utils/helpers/base_vm.dart';
 import 'package:zen8app/utils/helpers/disposable.dart';
@@ -7,7 +7,7 @@ import 'package:zen8app/utils/helpers/disposable.dart';
 import '../../../../api/sources/main_service.dart';
 import '../../../../utils/helpers/di.dart';
 
-class TransactionVMInput extends Disposable {
+class WalletVMInput extends Disposable{
   final reload = PublishSubject();
   @override
   void dispose() {
@@ -15,17 +15,16 @@ class TransactionVMInput extends Disposable {
     super.dispose();
   }
 }
-
-class TransactionVMOutput extends Disposable {
-  final response = BehaviorSubject<List<TransactionData>>();
+class WalletVMOutput extends Disposable{
+  final response = BehaviorSubject<List<WalletModel>>();
   @override
   void dispose() {
     response.close();
   }
 }
 
-class TransactionVM extends BaseVM<TransactionVMInput, TransactionVMOutput> {
-  TransactionVM() : super(TransactionVMInput(), TransactionVMOutput());
+class WalletVM extends BaseVM<WalletVMInput,WalletVMOutput>{
+  WalletVM() : super(WalletVMInput(),WalletVMOutput());
 
   @override
   CompositeSubscription? connect() {
@@ -33,12 +32,12 @@ class TransactionVM extends BaseVM<TransactionVMInput, TransactionVMOutput> {
     final mainService = DI.resolve<MainService>();
 
     input.reload
-        .switchMap((param) => mainService
-            .getTransaction()
-            .trackActivity("loading", activityTracker))
+        .switchMap((param) => mainService.getWallet()
+        .trackActivity("loading", activityTracker))
         .handleErrorBy(errorTracker)
         .bindTo(output.response)
         .addTo(rxBag);
+
     return rxBag;
   }
 }

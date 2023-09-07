@@ -21,18 +21,6 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const LoginPage(),
       );
     },
-    WalletRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const WalletPage(),
-      );
-    },
-    WellComeRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const WellComePage(),
-      );
-    },
     HistoryRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -58,6 +46,31 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const TransactionPage(),
       );
     },
+    WellComeRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const WellComePage(),
+      );
+    },
+    WalletDetailRoute.name: (routeData) {
+      final args = routeData.argsAs<WalletDetailRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: WalletDetailPage(wallet: args.wallet),
+      );
+    },
+    WalletRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const WalletPage(),
+      );
+    },
+    SignUpRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const SignUpPage(),
+      );
+    },
   };
 }
 
@@ -71,34 +84,6 @@ class LoginRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'LoginRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [WalletPage]
-class WalletRoute extends PageRouteInfo<void> {
-  const WalletRoute({List<PageRouteInfo>? children})
-      : super(
-          WalletRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'WalletRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [WellComePage]
-class WellComeRoute extends PageRouteInfo<void> {
-  const WellComeRoute({List<PageRouteInfo>? children})
-      : super(
-          WellComeRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'WellComeRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
@@ -170,6 +155,77 @@ class TransactionRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'TransactionRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [WellComePage]
+class WellComeRoute extends PageRouteInfo<void> {
+  const WellComeRoute({List<PageRouteInfo>? children})
+      : super(
+          WellComeRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'WellComeRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [WalletDetailPage]
+class WalletDetailRoute extends PageRouteInfo<WalletDetailRouteArgs> {
+  WalletDetailRoute({
+    required WalletModel wallet,
+    List<PageRouteInfo>? children,
+  }) : super(
+          WalletDetailRoute.name,
+          args: WalletDetailRouteArgs(wallet: wallet),
+          initialChildren: children,
+        );
+
+  static const String name = 'WalletDetailRoute';
+
+  static const PageInfo<WalletDetailRouteArgs> page =
+      PageInfo<WalletDetailRouteArgs>(name);
+}
+
+class WalletDetailRouteArgs {
+  const WalletDetailRouteArgs({required this.wallet});
+
+  final WalletModel wallet;
+
+  @override
+  String toString() {
+    return 'WalletDetailRouteArgs{wallet: $wallet}';
+  }
+}
+
+/// generated route for
+/// [WalletPage]
+class WalletRoute extends PageRouteInfo<void> {
+  const WalletRoute({List<PageRouteInfo>? children})
+      : super(
+          WalletRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'WalletRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [SignUpPage]
+class SignUpRoute extends PageRouteInfo<void> {
+  const SignUpRoute({List<PageRouteInfo>? children})
+      : super(
+          SignUpRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'SignUpRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

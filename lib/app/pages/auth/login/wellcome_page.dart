@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:zen8app/utils/utils.dart';
 
-import '../../../router/router.dart';
-import '../../../widgets/sources/fade_animate_widget.dart';
+import '../../../../router/router.dart';
+import '../../../../widgets/sources/fade_animate_widget.dart';
 @RoutePage()
 class WellComePage extends StatefulWidget {
   const WellComePage({Key? key}) : super(key: key);
@@ -11,7 +12,7 @@ class WellComePage extends StatefulWidget {
   State<WellComePage> createState() => _WellComePageState();
 }
 
-class _WellComePageState extends State<WellComePage> {
+class _WellComePageState extends State<WellComePage>  {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,10 +93,7 @@ class _WellComePageState extends State<WellComePage> {
                             minWidth: double.infinity,
                             height: 60,
                             onPressed: () {
-                              // Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //         builder: (context) => SignupPage()));
+                             context.router.push(SignUpRoute());
                             },
                             color: Colors.yellow,
                             elevation: 0,
