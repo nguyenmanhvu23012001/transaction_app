@@ -44,34 +44,6 @@ class _LoginPageState extends State<LoginPage>
     }
   }
 
-  // void _showSuccessDialog() {
-  //   showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return AlertDialog(
-  //         title: Text("Đăng ký thành công"),
-  //         content: Text("Tài khoản của bạn đã được đăng ký thành công."),
-  //         actions: [
-  //           TextButton(
-  //             onPressed: () {
-  //               Navigator.of(context).pop(); // Đóng hộp thoại
-  //               // Chuyển đến trang đăng nhập
-  //               Navigator.pushReplacement(
-  //                 context,
-  //                 MaterialPageRoute(
-  //                   builder: (context) =>
-  //                       LoginPage(), // Thay ThangDangNhap bằng trang đăng nhập thực tế của bạn
-  //                 ),
-  //               );
-  //             },
-  //             child: Text("Đi đến Đăng nhập"),
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     return LoadingWidget(
